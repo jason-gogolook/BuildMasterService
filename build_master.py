@@ -7,7 +7,7 @@ from git.repository import Repository
 
 class BuildMaster:
     # 設定環境變數
-    SLACK_BOT_TOKEN = "xoxb-3184753415-5050441132624-Vuc5DxV1Fiy9ZiXp2gBBVlp7"
+    SLACK_BOT_TOKEN = "xoxb-3184753415-5050441132624-v1iNhsNb45Zoca1IGXdnh5Bp"
     # signing secrete for verifying the incoming request are coming from Slack
     SLACK_SIGNING_SECRET = "af070c2d7337a8c304036d9022a49951"
     SLACK_APP_TOKEN = "xapp-1-A050V33LZN0-5026080724214" \

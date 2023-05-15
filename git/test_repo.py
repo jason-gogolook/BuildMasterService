@@ -5,7 +5,7 @@ import requests
 
 
 class TestRepository(Repository):
-    ACCESS_TOKEN = "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"
+    ACCESS_TOKEN = "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"
     REPO_NAME = "jason-gogolook/gogo_design_pattern"
     # REPO_NAME = "Gogolook-Inc/WhosCall_Android"
 
