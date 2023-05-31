@@ -8,7 +8,7 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 from git.repository import Repository
 
 # 設定環境變數
-os.environ["SLACK_BOT_TOKEN"] = "xoxb-3184753415-5050441132624-lCPxgaz0XkhdvJxgMda7DLSc"
+os.environ["SLACK_BOT_TOKEN"] = "xoxb-3184753415-5050441132624-1xa3bGShP5ztNB8eiLR3hvgx"
 # signing secrete for verifying the incoming request are coming from Slack
 os.environ["SLACK_SIGNING_SECRET"] = "af070c2d7337a8c304036d9022a49951"
 os.environ["SLACK_APP_TOKEN"] = "xapp-1-A050V33LZN0-5026080724214" \

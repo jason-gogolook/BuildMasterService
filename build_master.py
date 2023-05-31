@@ -7,11 +7,11 @@ from git.repository import Repository
 
 class BuildMaster:
     # 設定環境變數
-    SLACK_BOT_TOKEN = "xoxb-3184753415-5050441132624-v1iNhsNb45Zoca1IGXdnh5Bp"
+    SLACK_BOT_TOKEN = "xoxb-3184753415-5050441132624-1xa3bGShP5ztNB8eiLR3hvgx"
     # signing secrete for verifying the incoming request are coming from Slack
     SLACK_SIGNING_SECRET = "af070c2d7337a8c304036d9022a49951"
     SLACK_APP_TOKEN = "xapp-1-A050V33LZN0-5026080724214" \
-                      "-dd472481c43e1254f3a9ef15769105729c196282d6634550ebae51dd2adb702a "
+                      "-dd472481c43e1254f3a9ef15769105729c196282d6634550ebae51dd2adb702a"
 
     # 訊息內容與要發送的頻道
     code_freeze_reminder_message = "<!here> 大大們日安\n" \
@@ -49,6 +49,8 @@ class BuildMaster:
         self.slack_app.command("/build-rc")(self.build_rc)
         self.slack_app.action("trigger_release_note")(self.prepare_release_note)
         self.slack_app.action("trigger_lokalise_link")(self.respond_lokalise_button)
+
+        print(str(self.slack_app.client.auth_test().validate()) + " is ready to go !!!!")
 
         SocketModeHandler(self.slack_app, self.SLACK_APP_TOKEN).start()
 

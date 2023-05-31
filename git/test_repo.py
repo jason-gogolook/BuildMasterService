@@ -5,9 +5,9 @@ import requests
 
 
 class TestRepository(Repository):
-    ACCESS_TOKEN = "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"
-    REPO_NAME = "jason-gogolook/gogo_design_pattern"
-    # REPO_NAME = "Gogolook-Inc/WhosCall_Android"
+    ACCESS_TOKEN = "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"
+    # REPO_NAME = "jason-gogolook/gogo_design_pattern"
+    REPO_NAME = "Gogolook-Inc/WhosCall_Android"
 
     def __init__(self):
         print("init TestRepository")
