@@ -1,18 +1,14 @@
 # Use the package we installed
+from dotenv import load_dotenv
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
 from git.repository import Repository
 
+import os
+
 
 class BuildMaster:
-    # 設定環境變數
-    SLACK_BOT_TOKEN = "xoxb-3184753415-5050441132624-1xa3bGShP5ztNB8eiLR3hvgx"
-    # signing secrete for verifying the incoming request are coming from Slack
-    SLACK_SIGNING_SECRET = "af070c2d7337a8c304036d9022a49951"
-    SLACK_APP_TOKEN = "xapp-1-A050V33LZN0-5026080724214" \
-                      "-dd472481c43e1254f3a9ef15769105729c196282d6634550ebae51dd2adb702a"
-
     # 訊息內容與要發送的頻道
     code_freeze_reminder_message = "<!here> 大大們日安\n" \
                                    "今天是 {release_version} code freeze 的日子\n" \
@@ -39,6 +35,13 @@ class BuildMaster:
     }
 
     def __init__(self, repo: Repository):
+        # 設定環境變數
+        load_dotenv()
+        self.SLACK_BOT_TOKEN = os.getenv('SLACK_BOT_TOKEN')
+        # signing secrete for verifying the incoming request are coming from Slack
+        self.SLACK_SIGNING_SECRET = os.getenv('SLACK_SIGNING_SECRET')
+        self.SLACK_APP_TOKEN = os.getenv('SLACK_APP_TOKEN')
+
         self.repo = repo
         self.repo.print_repo_info()
         # self.repo.get_all()

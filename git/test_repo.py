@@ -1,17 +1,21 @@
+from dotenv import load_dotenv
 from github import Github
 from git.repository import Repository, search_version
 
+import os
 import requests
 
 
 class TestRepository(Repository):
-    ACCESS_TOKEN = "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"
     # REPO_NAME = "jason-gogolook/gogo_design_pattern"
     REPO_NAME = "Gogolook-Inc/WhosCall_Android"
 
     def __init__(self):
+        load_dotenv()
+        self.GITHUB_ACCESS_TOKEN = os.getenv('BUILD_MASTER_GITHUB_ACCESS_TOKEN')
+
         print("init TestRepository")
-        self.repository = Github(self.ACCESS_TOKEN).get_repo(self.REPO_NAME)
+        self.repository = Github(self.GITHUB_ACCESS_TOKEN).get_repo(self.REPO_NAME)
 
     def get_pr_list(self, keyword):
         url = "https://api.github.com/search/issues" \
@@ -21,7 +25,7 @@ class TestRepository(Repository):
               "+{}+in:title".format(keyword)
         headers = {
             "Accept": "application/vnd.github+json",
-            "Authorization": "Bearer " + self.ACCESS_TOKEN,
+            "Authorization": "Bearer " + self.GITHUB_ACCESS_TOKEN,
             "X-GitHub-Api-Version": "2022-11-28"
         }
         pr_list = [keyword]
