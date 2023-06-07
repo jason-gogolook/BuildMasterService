@@ -10,7 +10,6 @@ from git.test_repo import TestRepository
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # repo = WhoscallRepository()
-    master = BuildMaster(TestRepository())
+    master = BuildMaster(WhoscallRepository())
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
