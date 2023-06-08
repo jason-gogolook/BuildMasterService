@@ -18,7 +18,7 @@ class TestRepository(Repository):
 
     def get_pr_list(self, keyword):
         url = "https://api.github.com/search/issues" \
-              "?q=repo:Gogolook-Inc/WhosCall_Android" \
+              "?q=repo:" + self.REPO_NAME + \
               "+type:pr" \
               "+state:closed" \
               "+{}+in:title".format(keyword)
