@@ -2,7 +2,6 @@
 from dotenv import load_dotenv
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
-
 from git.repository import Repository
 
 import os
@@ -17,11 +16,19 @@ class BuildMaster:
                                    "2. 確認 branch name 符合 CircleCI run auto test 的觸發規則\n" \
                                    "\n_*{trash_talk}*_\n" \
                                    "\n感謝所有為了 Whoscall Android 努力的大大們 :pray:\n"
+
     release_note_message = "*Release Note* {release_note}\n"
     error_message = "*不是 build master 不要亂 build !!!!*"
+
     channel_id_core_android_dev = "G0197TMFQEM"
     channel_id_test = "C050ZCNCDC3"
     channel_id_android_code_review = "G2AVCDR7B"
+    channel_id_dic = {
+        "core-android-dev": channel_id_core_android_dev,
+        "test": channel_id_test,
+        "android-code-review": channel_id_android_code_review
+    }
+
     authenticated_user_id = ['U6YR0399D', 'U6L1E3STZ']
     github_slack_dict = {
         'christclin': 'U6L1E3STZ',
@@ -44,16 +51,13 @@ class BuildMaster:
 
         self.repo = repo
         self.repo.print_repo_info()
-        # self.repo.get_all()
 
-        # Initializes your app with your bot token and signing secret
+        # Initialize your app with your bot token and signing secret
         self.slack_app = App(token=self.SLACK_BOT_TOKEN, signing_secret=self.SLACK_SIGNING_SECRET)
         self.slack_app.command("/code-freeze-notice")(self.send_code_freeze_notice)
         self.slack_app.command("/build-rc")(self.build_rc)
         self.slack_app.action("trigger_release_note")(self.prepare_release_note)
         self.slack_app.action("trigger_lokalise_link")(self.respond_lokalise_button)
-
-        print(str(self.slack_app.client.auth_test().validate()) + " is ready to go !!!!")
 
         SocketModeHandler(self.slack_app, self.SLACK_APP_TOKEN).start()
 
@@ -72,7 +76,16 @@ class BuildMaster:
             else:
                 msg = self.error_message
 
-            self.slack_app.client.chat_postMessage(channel=self.channel_id_test, text=msg)
+            if len(params) > 2:
+                try:
+                    channel = self.channel_id_dic[params[2]]
+                except:
+                    ack("No such channel")
+                    return
+            else:
+                channel = self.channel_id_android_code_review
+
+            self.slack_app.client.chat_postMessage(channel=channel, text=msg)
         else:
             ack("No version and trash talk !!!!")
 
