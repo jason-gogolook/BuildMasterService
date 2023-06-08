@@ -33,7 +33,7 @@ class Repository(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def new_branch(self, base_branch):
+    def new_branch(self, base_branch_name):
         pass
 
     @abc.abstractmethod

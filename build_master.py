@@ -41,7 +41,7 @@ class BuildMaster:
         'carlosyanggogolook': 'U4846G01G',
     }
 
-    def __init__(self, repo: Repository):
+    def __init__(self, repo: Repository, inform_channel):
         # 設定環境變數
         load_dotenv()
         self.SLACK_BOT_TOKEN = os.getenv('SLACK_BOT_TOKEN')
@@ -51,6 +51,8 @@ class BuildMaster:
 
         self.repo = repo
         self.repo.print_repo_info()
+
+        self.inform_channel = self.channel_id_dic[inform_channel]
 
         # Initialize your app with your bot token and signing secret
         self.slack_app = App(token=self.SLACK_BOT_TOKEN, signing_secret=self.SLACK_SIGNING_SECRET)
@@ -76,16 +78,7 @@ class BuildMaster:
             else:
                 msg = self.error_message
 
-            if len(params) > 2:
-                try:
-                    channel = self.channel_id_dic[params[2]]
-                except:
-                    ack("No such channel")
-                    return
-            else:
-                channel = self.channel_id_android_code_review
-
-            self.slack_app.client.chat_postMessage(channel=channel, text=msg)
+            self.slack_app.client.chat_postMessage(channel=self.inform_channel, text=msg)
         else:
             ack("No version and trash talk !!!!")
 
@@ -94,11 +87,11 @@ class BuildMaster:
         logger.info(body)
 
         # create new rc branch
-        rc_version = self.repo.new_branch("test_gradle_file")
+        rc_version = self.repo.new_branch("develop")
         self.show_new_branch_info(rc_version)
 
         # fire a pr request to update version to develop branch
-        pr_link = self.repo.upgrade_gradle_version_with_pull_request("test_gradle_file")
+        pr_link = self.repo.upgrade_gradle_version_with_pull_request("develop")
         self.show_pr_link(pr_link)
 
         # edit release note
@@ -116,7 +109,7 @@ class BuildMaster:
                 }
             }
         ]
-        self.slack_app.client.chat_postMessage(channel=self.channel_id_test, blocks=blocks)
+        self.slack_app.client.chat_postMessage(channel=self.inform_channel, blocks=blocks)
 
     def show_pr_link(self, link):
         blocks = [
@@ -128,7 +121,7 @@ class BuildMaster:
                 }
             }
         ]
-        self.slack_app.client.chat_postMessage(channel=self.channel_id_test, blocks=blocks)
+        self.slack_app.client.chat_postMessage(channel=self.inform_channel, blocks=blocks)
 
     def edit_release_note(self, note):
         blocks = [
@@ -167,7 +160,7 @@ class BuildMaster:
                 ]
             }
         ]
-        self.slack_app.client.chat_postMessage(channel=self.channel_id_test, blocks=blocks, link_names=1)
+        self.slack_app.client.chat_postMessage(channel=self.inform_channel, blocks=blocks, link_names=1)
 
     def prepare_release_note(self, ack, body, logger):
         param = body['state']['values']['release_note_block']['plain_input']['value']
@@ -198,7 +191,7 @@ class BuildMaster:
             else:
                 msg = self.error_message
 
-            self.slack_app.client.chat_postMessage(channel=self.channel_id_test, link_names=1, text=msg)
+            self.slack_app.client.chat_postMessage(channel=self.inform_channel, link_names=1, text=msg)
             self.create_lokalise_link_button()
         else:
             ack("Please fill in the release note")
@@ -222,7 +215,7 @@ class BuildMaster:
                 ]
             }
         ]
-        self.slack_app.client.chat_postMessage(channel=self.channel_id_test, blocks=blocks)
+        self.slack_app.client.chat_postMessage(channel=self.inform_channel, blocks=blocks)
 
     def respond_lokalise_button(self, ack, body, logger):
         ack()

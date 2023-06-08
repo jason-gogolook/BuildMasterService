@@ -7,14 +7,13 @@ import requests
 
 
 class TestRepository(Repository):
-    # REPO_NAME = "jason-gogolook/gogo_design_pattern"
-    REPO_NAME = "Gogolook-Inc/WhosCall_Android"
+    REPO_NAME = "jason-gogolook/gogo_design_pattern"
 
     def __init__(self):
         load_dotenv()
         self.GITHUB_ACCESS_TOKEN = os.getenv('BUILD_MASTER_GITHUB_ACCESS_TOKEN')
 
-        print("init TestRepository")
+        print("Init TestRepository")
         self.repository = Github(self.GITHUB_ACCESS_TOKEN).get_repo(self.REPO_NAME)
 
     def get_pr_list(self, keyword):
@@ -39,8 +38,9 @@ class TestRepository(Repository):
             print(f'Error: {response.status_code} - {response.text}')
         return pr_list
 
-    def new_branch(self, base_branch):
-        base_branch = self.repository.get_branch(base_branch)
+    def new_branch(self, base_branch_name):
+        base_branch_name = "test_gradle_file"
+        base_branch = self.repository.get_branch(base_branch_name)
         gradle_file = self.repository.get_contents("GogoMind/build.gradle", base_branch.commit.sha)
         gradle_file_content = gradle_file.decoded_content.decode("utf-8")
         current_version = search_version(gradle_file_content)
@@ -67,6 +67,7 @@ class TestRepository(Repository):
             print(branch.name)
 
     def upgrade_gradle_version_with_pull_request(self, branch_name):
+        branch_name = "test_gradle_file"
         base_branch = self.repository.get_branch(branch_name)
         gradle_file = self.repository.get_contents("GogoMind/build.gradle", base_branch.commit.sha)
         gradle_file_content = gradle_file.decoded_content.decode("utf-8")

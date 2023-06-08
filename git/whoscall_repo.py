@@ -8,6 +8,7 @@ import requests
 
 class WhoscallRepository(Repository):
     REPO_NAME = "Gogolook-Inc/WhosCall_Android"
+    GRADLE_FILE = "whoscall_gradle/whoscall/build.gradle"
 
     def __init__(self):
         print("Init WhoscallRepository")
@@ -38,9 +39,9 @@ class WhoscallRepository(Repository):
             print(f'Error: {response.status_code} - {response.text}')
         return pr_list
 
-    def new_branch(self, base_branch):
-        base_branch = self.repository.get_branch(base_branch)
-        gradle_file = self.repository.get_contents("GogoMind/build.gradle", base_branch.commit.sha)
+    def new_branch(self, base_branch_name):
+        base_branch = self.repository.get_branch(base_branch_name)
+        gradle_file = self.repository.get_contents(self.GRADLE_FILE, base_branch.commit.sha)
         gradle_file_content = gradle_file.decoded_content.decode("utf-8")
         current_version = search_version(gradle_file_content)
         print("current_version:", current_version)
@@ -67,7 +68,7 @@ class WhoscallRepository(Repository):
 
     def upgrade_gradle_version_with_pull_request(self, branch_name):
         base_branch = self.repository.get_branch(branch_name)
-        gradle_file = self.repository.get_contents("GogoMind/build.gradle", base_branch.commit.sha)
+        gradle_file = self.repository.get_contents(self.GRADLE_FILE, base_branch.commit.sha)
         gradle_file_content = gradle_file.decoded_content.decode("utf-8")
 
         current_version_major = ""
