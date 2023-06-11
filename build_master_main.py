@@ -8,6 +8,6 @@ from git.test_repo import TestRepository
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    BuildMaster(TestRepository(), "test")
+    BuildMaster(WhoscallRepository(), "android-code-review")
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
